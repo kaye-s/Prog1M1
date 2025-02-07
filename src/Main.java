@@ -28,13 +28,14 @@ public class Main {
         for (int i = 0; i < args.length; ++i) {
             args[i] = args[i].trim();
         }
+
         ArrayList<String> temp = new ArrayList<String>();
         for(int i = 0; i < args.length; ++i) {
-            if(!(args[i].contains(" "))) {
+            if(!(args[i].isEmpty())) {
                 temp.add(args[i]);
             }
         }
-        System.out.println(temp.size());
+
         args = temp.toArray(new String[0]);
 
         //"and", " ", " ", " ", "$t0 . . .

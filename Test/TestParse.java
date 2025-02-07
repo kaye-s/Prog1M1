@@ -114,4 +114,36 @@ public class TestParse {
         Assert.assertArrayEquals(args, Main.parseString(input));
     }
 
+    @Test
+    public void testParseStringJFormatSpacesAndTabs() {
+        String input = "j \t  \t  $t5";
+        String[] args = {"j", "$t5"};
+
+        Assert.assertArrayEquals(args, Main.parseString(input));
+    }
+
+    @Test
+    public void testParseStringJFormatSpaceEnd() {
+        String input = "j $t5             ";
+        String[] args = {"j", "$t5"};
+
+        Assert.assertArrayEquals(args, Main.parseString(input));
+    }
+
+    @Test
+    public void testParseStringJFormatComment() {
+        String input = "j $t5# Comment";
+        String[] args = {"j", "$t5"};
+
+        Assert.assertArrayEquals(args, Main.parseString(input));
+    }
+
+    @Test
+    public void testParseStringJFormatCommentSpace() {
+        String input = "j $t5 #Comment";
+        String[] args = {"j", "$t5"};
+
+        Assert.assertArrayEquals(args, Main.parseString(input));
+    }
+
 }
