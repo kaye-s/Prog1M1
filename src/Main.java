@@ -7,10 +7,48 @@ public class Main {
     public static void main(String[] args) {
         //args[1] = input string?
         Map<String, Integer> map = new HashMap<String, Integer>();
-        System.out.println(Arrays.toString(parseString(args[0])));
+        map = createMap(map);
+        String[] input = parseString(args[0]);
+        System.out.println(Arrays.toString(input));
+        int result = 0;
 
-        String input = "add $t0, $t1, $t2";
+        if(input[0].equals("syscall")) {
+            result = map.get("syscall");
+        }
+        if(input[0].equals("j")) {
+            //J-type
+        }
+        if(input[0].equals("add") || input[0].equals("and") || input[0].equals("or") || input[0].equals("slt") || input[0].equals("sub")) {
+            //R-type
+        }
+        if(input[0].equals("addiu") || input[0].equals("andi") || input[0].equals("beq") || input[0].equals("bne") || input[0].equals("lui") || input[0].equals("ori")) {
+            //I-type
+        }
+        if(input[0].equals("sw") || input[0].equals("lw")) {
+            //Funky-type
+        }
+
+        System.out.println(String.format("%08x", result));
     }
+    public static int toNum(String s) {
+        int num;
+        if(s.charAt(1) == 'x') {
+            num = Integer.parseInt(s.substring(2), 16);
+        } else {
+            num = Integer.parseInt(s);
+        }
+        return num;
+    }
+    public static int jType(String[] args, Map<String, Integer> map) {
+        int opcode = map.get("j");
+        int instIndex = toNum(args[1]);
+        int inst = 0;
+
+        inst = inst | (instIndex << 0);
+        inst = inst | (opcode << 26);
+        return inst;
+    }
+
     public static String[] parseString(String input) {
         //Getting rid of Comments
         if(input.contains("#")) {
@@ -71,7 +109,7 @@ public class Main {
         map.put("beq", 4);
         map.put("bne", 5);
         map.put("j", 2);
-        map.put("liu", 15);
+        map.put("lui", 15);
         map.put("lw", 35);
         map.put("or", 37);
         map.put("ori", 13);

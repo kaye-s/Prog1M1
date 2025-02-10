@@ -41,7 +41,7 @@ public class TestMap {
         manualMap.put("beq", 4);
         manualMap.put("bne", 5);
         manualMap.put("j", 2);
-        manualMap.put("liu", 15);
+        manualMap.put("lui", 15);
         manualMap.put("lw", 35);
         manualMap.put("or", 37);
         manualMap.put("ori", 13);
@@ -58,7 +58,7 @@ public class TestMap {
         Assert.assertEquals(map.get("beq"), manualMap.get("beq"));
         Assert.assertEquals(map.get("bne"), manualMap.get("bne"));
         Assert.assertEquals(map.get("j"), manualMap.get("j"));
-        Assert.assertEquals(map.get("liu"), manualMap.get("liu"));
+        Assert.assertEquals(map.get("lui"), manualMap.get("lui"));
         Assert.assertEquals(map.get("lw"), manualMap.get("lw"));
         Assert.assertEquals(map.get("or"), manualMap.get("or"));
         Assert.assertEquals(map.get("ori"), manualMap.get("ori"));
