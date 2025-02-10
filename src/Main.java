@@ -37,6 +37,10 @@ public class Main {
         } else {
             num = Integer.parseInt(s);
         }
+        if(num < 0) {
+            //num = (num | 67108863) + 1;
+            System.out.println(String.format("%032b", num));
+        }
         return num;
     }
     public static int jType(String[] args, Map<String, Integer> map) {
@@ -59,6 +63,45 @@ public class Main {
 
         inst = inst | (funct << 0);
         inst = inst | (rd << 11);
+        inst = inst | (rt << 16);
+        inst = inst | (rs << 21);
+        inst = inst | (opcode << 26);
+        return inst;
+    }
+
+    public static int iTypeReg(String[] args, Map<String, Integer> map) {
+        int opcode = map.get(args[0]);
+        int rs = map.get(args[2]);
+        int rt = map.get(args[1]);
+        int imm = toNum(args[3]);
+        int inst = 0;
+
+        inst = inst | (imm << 0);
+        inst = inst | (rt << 16);
+        inst = inst | (rs << 21);
+        inst = inst | (opcode << 26);
+        return inst;
+    }
+
+    public static int iTypeBranch(String[] args, Map<String, Integer> map) {
+        int opcode = map.get(args[0]);
+        int rs;
+        int rt;
+        int imm;
+        int inst = 0;
+
+        if(args[0].equals("lui")) {
+            rs = 0;
+            rt = map.get(args[1]);
+            imm = toNum(args[2]);
+
+        } else{
+            rs = map.get(args[1]);
+            rt = map.get(args[2]);
+            imm = toNum(args[3]);
+        }
+
+        inst = inst | (imm << 0);
         inst = inst | (rt << 16);
         inst = inst | (rs << 21);
         inst = inst | (opcode << 26);
