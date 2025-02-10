@@ -1,9 +1,11 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
         //args[1] = input string?
-
+        Map<String, Integer> map = new HashMap<String, Integer>();
         System.out.println("Hello World");
 
         String input = "add $t0, $t1, $t2";
@@ -56,5 +58,9 @@ public class Main {
             args[1] = args[1].substring(0, args[1].length() - 1);
         }
         return args;
+    }
+
+    public static Map<String, Integer> createMap(Map<String, Integer> map) {
+        return null;
     }
 }
