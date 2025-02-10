@@ -4,12 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Main {
+    public static String final_result = "";
     public static void main(String[] args) {
         //args[1] = input string?
         Map<String, Integer> map = new HashMap<String, Integer>();
         map = createMap(map);
         String[] input = parseString(args[0]);
-        System.out.println(Arrays.toString(input));
+        //System.out.println(Arrays.toString(input));
         int result = 0;
 
         if(input[0].equals("syscall")) {
@@ -32,6 +33,7 @@ public class Main {
         }
 
         System.out.println(String.format("%08x", result));
+        Main.final_result = String.format("%08x", result);
     }
     public static int toNum(String s) {
         int num;
