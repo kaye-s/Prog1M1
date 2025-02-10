@@ -21,8 +21,11 @@ public class Main {
         if(input[0].equals("add") || input[0].equals("and") || input[0].equals("or") || input[0].equals("slt") || input[0].equals("sub")) {
             result = rType(input, map);
         }
-        if(input[0].equals("addiu") || input[0].equals("andi") || input[0].equals("beq") || input[0].equals("bne") || input[0].equals("lui") || input[0].equals("ori")) {
-            //I-type
+        if(input[0].equals("addiu") || input[0].equals("andi") || input[0].equals("ori")) {
+            //I-type reg
+        }
+        if(input[0].equals("beq") || input[0].equals("bne") || input[0].equals("lui")) {
+            //I-type branch
         }
         if(input[0].equals("sw") || input[0].equals("lw")) {
             //Funky-type
