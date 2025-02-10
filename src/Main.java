@@ -22,10 +22,10 @@ public class Main {
             result = rType(input, map);
         }
         if(input[0].equals("addiu") || input[0].equals("andi") || input[0].equals("ori")) {
-            //I-type reg
+            result = iTypeReg(input, map);
         }
         if(input[0].equals("beq") || input[0].equals("bne") || input[0].equals("lui")) {
-            //I-type branch
+            result = iTypeBranch(input, map);
         }
         if(input[0].equals("sw") || input[0].equals("lw")) {
             //Funky-type
