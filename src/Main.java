@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -6,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
         //args[1] = input string?
         Map<String, Integer> map = new HashMap<String, Integer>();
-        System.out.println("Hello World");
+        System.out.println(Arrays.toString(parseString(args[0])));
 
         String input = "add $t0, $t1, $t2";
     }
@@ -61,6 +62,24 @@ public class Main {
     }
 
     public static Map<String, Integer> createMap(Map<String, Integer> map) {
-        return null;
+
+        // put opcodes into map
+        map.put("add", 32);
+        map.put("addiu", 9);
+        map.put("and", 32);
+        map.put("andi", 32);
+        map.put("beq", 32);
+        map.put("bne", 32);
+        map.put("j", 32);
+        map.put("liu", 32);
+        map.put("lw", 32);
+        map.put("or", 32);
+        map.put("ori", 32);
+        map.put("slt", 32);
+        map.put("sub", 32);
+        map.put("sw", 32);
+        map.put("syscall", 12);
+
+        return map;
     }
 }
