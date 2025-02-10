@@ -16,10 +16,10 @@ public class Main {
             result = map.get("syscall");
         }
         if(input[0].equals("j")) {
-            //J-type
+            result = jType(input, map);
         }
         if(input[0].equals("add") || input[0].equals("and") || input[0].equals("or") || input[0].equals("slt") || input[0].equals("sub")) {
-            //R-type
+            result = rType(input, map);
         }
         if(input[0].equals("addiu") || input[0].equals("andi") || input[0].equals("beq") || input[0].equals("bne") || input[0].equals("lui") || input[0].equals("ori")) {
             //I-type
@@ -45,6 +45,22 @@ public class Main {
         int inst = 0;
 
         inst = inst | (instIndex << 0);
+        inst = inst | (opcode << 26);
+        return inst;
+    }
+
+    public static int rType(String[] args, Map<String, Integer> map) {
+        int opcode = 0;
+        int rs = map.get(args[2]);
+        int rt = map.get(args[3]);
+        int rd = map.get(args[1]);
+        int funct = map.get(args[0]);
+        int inst = 0;
+
+        inst = inst | (funct << 0);
+        inst = inst | (rd << 11);
+        inst = inst | (rt << 16);
+        inst = inst | (rs << 21);
         inst = inst | (opcode << 26);
         return inst;
     }
