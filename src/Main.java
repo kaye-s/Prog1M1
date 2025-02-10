@@ -66,19 +66,36 @@ public class Main {
         // put opcodes into map
         map.put("add", 32);
         map.put("addiu", 9);
-        map.put("and", 32);
-        map.put("andi", 32);
-        map.put("beq", 32);
-        map.put("bne", 32);
-        map.put("j", 32);
-        map.put("liu", 32);
-        map.put("lw", 32);
-        map.put("or", 32);
-        map.put("ori", 32);
-        map.put("slt", 32);
-        map.put("sub", 32);
-        map.put("sw", 32);
+        map.put("and", 36);
+        map.put("andi", 12);
+        map.put("beq", 4);
+        map.put("bne", 5);
+        map.put("j", 2);
+        map.put("liu", 15);
+        map.put("lw", 35);
+        map.put("or", 37);
+        map.put("ori", 13);
+        map.put("slt", 42);
+        map.put("sub", 66);
+        map.put("sw", 43);
         map.put("syscall", 12);
+
+        // put registers into map
+        map.put("$zero", 0);
+        map.put("$0", 0);
+        map.put("$t0", 1);
+        map.put("$t0", 1);
+        map.put("$t0", 1);
+        map.put("$t0", 1);
+        map.put("$t0", 1);
+        map.put("$t0", 1);
+        map.put("$t0", 1);
+        map.put("$t0", 1);
+        map.put("$t0", 1);
+        map.put("$t0", 1);
+        map.put("$t0", 1);
+        map.put("$t0", 1);
+        map.put("$t0", 1);
 
         return map;
     }
