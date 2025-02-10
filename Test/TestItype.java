@@ -5,12 +5,21 @@ import java.util.Map;
 
 public class TestItype {
     @Test
-    public void testITypeRegAdd() {
+    public void testITypeRegAndiNeg() {
         Map<String, Integer> map = new HashMap<String, Integer>();
         map = Main.createMap(map);
 
         String[] args = {"andi", "$s5", "$t7", "-79"};
-        int result = 0x5ffb1;
+        int result = 0x31f5ffb1;
+        Assert.assertEquals(result, Main.iTypeReg(args, map));
+    }
+    @Test
+    public void testITypeRegAndiPos() {
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        map = Main.createMap(map);
+
+        String[] args = {"andi", "$sp", "$k1", "0x4e"};
+        int result = 0x337d004e;
         Assert.assertEquals(result, Main.iTypeReg(args, map));
     }
 

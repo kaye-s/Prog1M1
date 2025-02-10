@@ -40,16 +40,16 @@ public class Main {
         } else {
             num = Integer.parseInt(s);
         }
-        if(num < 0) {
-            //num = (num | 67108863) + 1;
-            System.out.println(String.format("%032b", num));
-        }
+
         return num;
     }
     public static int jType(String[] args, Map<String, Integer> map) {
         int opcode = map.get("j");
         int instIndex = toNum(args[1]);
         int inst = 0;
+        if (instIndex < 0){
+            instIndex = instIndex & 67108863;
+        }
 
         inst = inst | (instIndex << 0);
         inst = inst | (opcode << 26);
@@ -78,6 +78,9 @@ public class Main {
         int rt = map.get(args[1]);
         int imm = toNum(args[3]);
         int inst = 0;
+        if (imm < 0){
+            imm = imm & 65535;
+        }
 
         inst = inst | (imm << 0);
         inst = inst | (rt << 16);
@@ -102,6 +105,9 @@ public class Main {
             rs = map.get(args[1]);
             rt = map.get(args[2]);
             imm = toNum(args[3]);
+        }
+        if (imm < 0){
+            imm = imm & 65535;
         }
 
         inst = inst | (imm << 0);
