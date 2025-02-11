@@ -184,7 +184,7 @@ public class Main {
         map.put("or", 37);
         map.put("ori", 13);
         map.put("slt", 42);
-        map.put("sub", 66);
+        map.put("sub", 34);
         map.put("sw", 43);
         map.put("syscall", 12);
 
