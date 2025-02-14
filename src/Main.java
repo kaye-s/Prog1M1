@@ -133,8 +133,10 @@ public class Main {
                 baseStr = args[2].substring(i+1, args[2].length()-1);
             }
         }
-
-        int offset = toNum(offsetStr);
+        int offset = 0;
+        if (!offsetStr.isEmpty()){
+            offset = toNum(offsetStr);
+        }
         int base = map.get(baseStr);
 
         int inst = 0;
