@@ -119,6 +119,34 @@ public class Main {
         return inst;
     }
 
+    public static int funkyType(String[] args, Map<String, Integer> map) {
+        int opcode = map.get(args[0]);
+        int rt = map.get(args[1]);
+
+        // parse args[2] - offset(base)
+        String offsetStr = "";
+        String baseStr = "";
+
+        for (int i = 0; i < args[2].length(); ++i){
+            if (args[2].charAt(i) == '('){
+                offsetStr = args[2].substring(0, i);
+                baseStr = args[2].substring(i, args[2].length()-1);
+            }
+        }
+
+        int offset = map.get(offsetStr);
+        int base = map.get(baseStr);
+
+        int inst = 0;
+
+        inst = inst | (offset << 0);
+        inst = inst | (rt << 16);
+        inst = inst | (base << 21);
+        inst = inst | (opcode << 26);
+        return inst;
+    }
+
+
     public static String[] parseString(String input) {
         //Getting rid of Comments
         if(input.contains("#")) {
