@@ -130,11 +130,11 @@ public class Main {
         for (int i = 0; i < args[2].length(); ++i){
             if (args[2].charAt(i) == '('){
                 offsetStr = args[2].substring(0, i);
-                baseStr = args[2].substring(i, args[2].length()-1);
+                baseStr = args[2].substring(i+1, args[2].length()-1);
             }
         }
 
-        int offset = map.get(offsetStr);
+        int offset = toNum(offsetStr);
         int base = map.get(baseStr);
 
         int inst = 0;
