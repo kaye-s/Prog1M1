@@ -37,7 +37,7 @@ public class Main {
     }
     public static int toNum(String s) {
         int num;
-        if(s.charAt(1) == 'x') {
+        if(s.length() > 2 && s.charAt(1) == 'x') {
             num = Integer.parseInt(s.substring(2), 16);
         } else {
             num = Integer.parseInt(s);
