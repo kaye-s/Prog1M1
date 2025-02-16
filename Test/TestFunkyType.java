@@ -39,8 +39,18 @@ public class TestFunkyType {
         Map<String, Integer> map = new HashMap<String, Integer>();
         map = Main.createMap(map);
 
-        String[] args = {"sw", "$t6", "114($s9)"};
+        String[] args = {"sw", "$t6", "114($s7)"};
         int result = 0xaeee0072;
+        Assert.assertEquals(result, Main.funkyType(args, map));
+    }
+
+    @Test
+    public void testFTypeSwNegativeOffset() {
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        map = Main.createMap(map);
+
+        String[] args = {"sw", "$s2", "-211($a1)"};
+        int result = 0xacb2ff2d;
         Assert.assertEquals(result, Main.funkyType(args, map));
     }
 }

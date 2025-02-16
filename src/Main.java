@@ -29,7 +29,7 @@ public class Main {
             result = iTypeBranch(input, map);
         }
         if(input[0].equals("sw") || input[0].equals("lw")) {
-            //Funky-type
+            result = funkyType(input, map);
         }
 
         System.out.println(String.format("%08x", result));
@@ -136,6 +136,9 @@ public class Main {
         int offset = 0;
         if (!offsetStr.isEmpty()){
             offset = toNum(offsetStr);
+            if (offset < 0){
+                offset = offset & 65535;
+            }
         }
         int base = map.get(baseStr);
 
