@@ -5,6 +5,9 @@ import java.util.Map;
 
 public class Main {
     public static String final_result = "";
+    public static int neg16 = 65535;
+    public static int neg26 = 67108863;
+
     public static void main(String[] args) {
         //args[1] = input string?
         Map<String, Integer> map = new HashMap<String, Integer>();
@@ -50,7 +53,7 @@ public class Main {
         int instIndex = toNum(args[1]);
         int inst = 0;
         if (instIndex < 0){
-            instIndex = instIndex & 67108863;
+            instIndex = instIndex & neg26;
         }
 
         inst = inst | (instIndex << 0);
@@ -81,7 +84,7 @@ public class Main {
         int imm = toNum(args[3]);
         int inst = 0;
         if (imm < 0){
-            imm = imm & 65535;
+            imm = imm & neg16;
         }
 
         inst = inst | (imm << 0);
@@ -109,7 +112,7 @@ public class Main {
             imm = toNum(args[3]);
         }
         if (imm < 0){
-            imm = imm & 65535;
+            imm = imm & neg16;
         }
 
         inst = inst | (imm << 0);
@@ -137,7 +140,7 @@ public class Main {
         if (!offsetStr.isEmpty()){
             offset = toNum(offsetStr);
             if (offset < 0){
-                offset = offset & 65535;
+                offset = offset & neg16;
             }
         }
         int base = map.get(baseStr);
