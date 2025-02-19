@@ -176,16 +176,15 @@ public class Main {
             args[i] = args[i].trim();
         }
 
+        //"and", " ", " ", " ", "$t0 . . .
         ArrayList<String> temp = new ArrayList<String>();
         for(int i = 0; i < args.length; ++i) {
-            if(!(args[i].isEmpty())) {
+            if(!(args[i].isEmpty() || args[i].equals(","))) {
                 temp.add(args[i]);
             }
         }
 
         args = temp.toArray(new String[0]);
-
-        //"and", " ", " ", " ", "$t0 . . .
 
         //Getting rid of commas
         //OP + 3
