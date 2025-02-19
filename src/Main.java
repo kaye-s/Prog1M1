@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
         //args[1] = input string?
-        Map<String, Integer> map = new HashMap<String, Integer>();
+        Map<String, Integer> map = new HashMap<>();
         map = createMap(map);
         String[] input = parseString(args[0]);
         //System.out.println(Arrays.toString(input));
@@ -180,6 +180,9 @@ public class Main {
         ArrayList<String> temp = new ArrayList<String>();
         for(int i = 0; i < args.length; ++i) {
             if(!(args[i].isEmpty() || args[i].equals(","))) {
+                if (args[i].charAt(args[i].length()-1) == ','){
+                    args[i] = args[i].substring(0,args[i].length()-1);
+                }
                 temp.add(args[i]);
             }
         }
@@ -190,17 +193,17 @@ public class Main {
         //OP + 3
         //add $t0, $t1, $t2
         //args[] = {add $t0, $t1, $t2}
-        if(args.length == 4) {
-            args[1] = args[1].substring(0, args[1].length() - 1);
-            args[2] = args[2].substring(0, args[2].length() - 1);
-        }
-
-        //OP + 2
-        //li $t0, 41
-        //args[] = {li $t0, 41}
-        if(args.length == 3) {
-            args[1] = args[1].substring(0, args[1].length() - 1);
-        }
+//        if(args.length == 4) {
+//            args[1] = args[1].substring(0, args[1].length() - 1);
+//            args[2] = args[2].substring(0, args[2].length() - 1);
+//        }
+//
+//        //OP + 2
+//        //li $t0, 41
+//        //args[] = {li $t0, 41}
+//        if(args.length == 3) {
+//            args[1] = args[1].substring(0, args[1].length() - 1);
+//        }
         return args;
     }
 

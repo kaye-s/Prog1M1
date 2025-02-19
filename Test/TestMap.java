@@ -46,7 +46,7 @@ public class TestMap {
         manualMap.put("or", 37);
         manualMap.put("ori", 13);
         manualMap.put("slt", 42);
-        manualMap.put("sub", 66);
+        manualMap.put("sub", 34);
         manualMap.put("sw", 43);
         manualMap.put("syscall", 12);
 
