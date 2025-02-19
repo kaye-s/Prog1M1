@@ -146,4 +146,12 @@ public class TestParse {
         Assert.assertArrayEquals(args, Main.parseString(input));
     }
 
+    @Test
+    public void testParseStringSpaceBeforeComma() {
+        String input = "lw $k0       , -118($ra)";
+        String[] args = {"lw", "$k0", "-118($ra)"};
+
+        Assert.assertArrayEquals(args, Main.parseString(input));
+    }
+
 }
