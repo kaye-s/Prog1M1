@@ -35,6 +35,36 @@ public class TestParse {
     }
 
     @Test
+    public void testParseStringSyscallWithSpaces() {
+        String input = "    syscall    ";
+        String[] args = {"syscall"};
+
+        Assert.assertArrayEquals(args, Main.parseString(input));
+    }
+
+    @Test
+    public void testParseStringSyscallWithSpacesBefore() {
+        String input = "    syscall";
+        String[] args = {"syscall"};
+
+        Assert.assertArrayEquals(args, Main.parseString(input));
+    }
+    @Test
+    public void testParseStringSyscallWithSpacesAfter() {
+        String input = "syscall    ";
+        String[] args = {"syscall"};
+
+        Assert.assertArrayEquals(args, Main.parseString(input));
+    }
+    @Test
+    public void testParseStringSyscallWithComment() {
+        String input = "syscall #comment";
+        String[] args = {"syscall"};
+
+        Assert.assertArrayEquals(args, Main.parseString(input));
+    }
+
+    @Test
     public void testParseStringSW() {
         String input = "sw $t6, 114($s7)";
         String[] args = {"sw", "$t6", "114($s7)"};

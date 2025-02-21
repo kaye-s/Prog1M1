@@ -187,8 +187,16 @@ public class Main {
 
         //"and", " ", " ", " ", "$t0 . . .
         ArrayList<String> temp = new ArrayList<String>();
-        temp.add(mnemonic.trim());
-        temp.add(firstArg.trim());
+
+
+        if (!(mnemonic.isEmpty() || firstArg.isEmpty())){
+            temp.add(mnemonic.trim());
+            temp.add(firstArg.trim());
+        }
+        else {
+            temp.add(args[0]);
+        }
+
         for(int i = 1; i < args.length; ++i) {
 //            if(!(args[i].isEmpty() || args[i].equals(","))) {
 //                if (args[i].charAt(args[i].length()-1) == ','){
