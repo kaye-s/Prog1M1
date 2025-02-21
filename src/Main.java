@@ -171,23 +171,34 @@ public class Main {
 
 
         //Creating the array of strings
-        String[] args = input.split(" ");
-        for (int i = 0; i < args.length; ++i) {
+        String[] args = input.split(",");
+        String mnemonic = "";
+        String firstArg = "";
+        for (int i = 0; i < args[0].length(); ++i){
+            if (args[0].charAt(i) == '\s'){
+                mnemonic = args[0].substring(0, i);
+                firstArg = args[0].substring(i+1);
+                break;
+            }
+        }
+        for (int i = 1; i < args.length; ++i) {
             args[i] = args[i].trim();
         }
 
         //"and", " ", " ", " ", "$t0 . . .
         ArrayList<String> temp = new ArrayList<String>();
-        for(int i = 0; i < args.length; ++i) {
-            if(!(args[i].isEmpty() || args[i].equals(","))) {
-                if (args[i].charAt(args[i].length()-1) == ','){
-                    args[i] = args[i].substring(0,args[i].length()-1);
-                }
+        temp.add(mnemonic.trim());
+        temp.add(firstArg.trim());
+        for(int i = 1; i < args.length; ++i) {
+//            if(!(args[i].isEmpty() || args[i].equals(","))) {
+//                if (args[i].charAt(args[i].length()-1) == ','){
+//                    args[i] = args[i].substring(0,args[i].length()-1);
+//                }
                 temp.add(args[i]);
-            }
+
         }
 
-        args = temp.toArray(new String[0]);
+        return temp.toArray(new String[0]);
 
         //Getting rid of commas
         //OP + 3
@@ -204,7 +215,6 @@ public class Main {
 //        if(args.length == 3) {
 //            args[1] = args[1].substring(0, args[1].length() - 1);
 //        }
-        return args;
     }
 
     public static Map<String, Integer> createMap(Map<String, Integer> map) {
