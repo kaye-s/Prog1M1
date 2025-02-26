@@ -14,6 +14,7 @@ public class Main {
         map = createMap(map);
         String[] input = parseString(args[0]);
         //System.out.println(Arrays.toString(input));
+        //Test
         int result = 0;
 
         if(input[0].equals("syscall")) {
