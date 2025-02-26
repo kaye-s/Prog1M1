@@ -1,12 +1,12 @@
 08000074 j 0x74
-02326822 sub $t5, $s1, $s2
+02326822 sub $t5,     $s1, $s2
 31f5ffb1 andi $s5, $t7, -79
 337d004e andi $sp, $k1, 0x4e# Comment
 161b0079 bne $s0, $k1, 0x79
 134f00a3 beq $k0, $t7, 0xa3# Comment
 0000000c syscall
 02d81025 or $v0, $s6, $t8
-267000a7 addiu $s0, $s3, 167
+267000a7 addiu $s0,$s3,167
 aeee0072 sw $t6, 114($s7)
 3289ffc2 andi $t1, $s4, -62
 0363582a slt $t3, $k1, $v1
@@ -15,7 +15,7 @@ aeee0072 sw $t6, 114($s7)
 33c10090 andi $at, $fp, 0x90
 161eff06 bne $s0, $fp, -250
 1306ff84 beq $t8, $a2, -124
-26f60063 addiu $s6, $s7, 99
+26f60063 addiu $s6,$s7   , 99
 018c002a slt $zero, $t4, $t4
 acb2ff2d sw $s2, -211($a1)
 8e3affa2 lw $k0, -94($s1)
