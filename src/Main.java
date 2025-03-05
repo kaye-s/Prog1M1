@@ -12,9 +12,14 @@ public class Main {
         //args[1] = input string?
         Map<String, Integer> map = new HashMap<>();
         map = createMap(map);
-        String[] input = parseString(args[0]);
-        //System.out.println(Arrays.toString(input));
-        //Test
+
+
+       // System.out.println(String.format("%08x", result));
+       // Main.final_result = String.format("%08x", result);
+    }
+
+    public static int stringToHex(String s, Map<String, Integer> map){
+        String[] input = parseString(s);
         int result = 0;
 
         if(input[0].equals("syscall")) {
@@ -36,8 +41,8 @@ public class Main {
             result = funkyType(input, map);
         }
 
-        System.out.println(String.format("%08x", result));
-        Main.final_result = String.format("%08x", result);
+        return result;
+
     }
     public static int toNum(String s) {
         int num;
