@@ -2,6 +2,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.File;  // Import the File class
+import java.io.FileNotFoundException;  // Import this class to handle errors
+import java.util.Scanner; // Import the Scanner class to read text files
+import java.io.FileWriter;
 
 public class Main {
     public static String final_result = "";
@@ -12,6 +16,22 @@ public class Main {
         //args[1] = input string?
         Map<String, Integer> map = new HashMap<>();
         map = createMap(map);
+        try {
+            File input = new File(args[0]);
+            Scanner myReader = new Scanner(input);
+            FileWriter writer = new FileWriter("example.txt");
+            writer.write("Hello, world!");
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                int result = stringToHex(data, map);
+                writer.write(String.format("%08x", result));
+            }
+            writer.close();
+        } catch (Exception e) {
+        System.out.println("An error occurred.");
+        e.printStackTrace();
+    }
+
 
 
        // System.out.println(String.format("%08x", result));
