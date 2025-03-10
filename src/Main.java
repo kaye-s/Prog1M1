@@ -13,20 +13,27 @@ public class Main {
     public static int neg26 = 67108863;
 
     public static void main(String[] args) {
-        //args[1] = input string?
         Map<String, Integer> map = new HashMap<>();
         map = createMap(map);
         try {
             File input = new File(args[0]);
+            //Convert filename to filename - .txt
+            String filename = "";
             Scanner myReader = new Scanner(input);
-            FileWriter writer = new FileWriter("example.txt");
-            writer.write("Hello, world!");
-            while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
-                int result = stringToHex(data, map);
-                writer.write(String.format("%08x", result));
-            }
-            writer.close();
+            FileWriter dataWriter = new FileWriter(filename + ".data");
+            //CALL DATA METHOD
+            Map<String, Integer> addrMap = data(myReader, dataWriter);
+
+            FileWriter textWriter = new FileWriter(filename + ".text");
+            //CALL TEXT METHOD
+            //text(myReader, textWriter, map, addrMap)
+
+            //int result = stringToHex(data, map);
+            //writer.write(String.format("%08x", result) + "\n");
+
+            dataWriter.close();
+            textWriter.close();
+            myReader.close();
         } catch (Exception e) {
         System.out.println("An error occurred.");
         e.printStackTrace();
@@ -38,6 +45,69 @@ public class Main {
        // Main.final_result = String.format("%08x", result);
     }
 
+    public static Map<String, Integer> data(Scanner myReader, FileWriter writer) {
+        //Create writer (name of file.data)
+        Map<String, Integer> addrMap = new HashMap<>();
+
+        //Count lineNum
+
+        while (myReader.hasNextLine()) {
+            String data = myReader.nextLine();
+            data = data.trim();
+            if (data.equals("\n") || data.isEmpty()) {
+                continue;
+            }
+            if (data.charAt(0) == '#') {
+                continue;
+            }
+            // First piece 0x10010000
+
+            //Find first label
+            //parseLabel(combinedString) returns array [label, string]
+                //Parse label (no colon) and string
+
+            //addToMap(label, string, int curAddr, addrMap) return new int curAddr
+                //add label, curAddr to addrMap
+                //Updates curAddr + (length of previous string + 1)
+            //curAddr = addToMap(a, b, c, d)
+
+            //String str = array[1] //[label, string]
+
+            //Store each character as an int in an arrayList [11, 22, 33, 44, 55, 66, 77, 88]
+
+            //STORE EVERYTHING
+        }
+        //Entire array of strings
+        //toLittleE(ArrayList) returns arrayList
+        //  Convert array to little eindian
+        //  [11,22,33,44] -> [44332211]
+        //  Last Element in newList must be 8 (00 buffered)
+
+        //Print to file From Arraylist
+        //For loop
+        //  print element
+        //  print newline
+
+        //Print to file 0s.
+        //For loop
+        //  print(8 0's
+        //  print newline
+
+        return addrMap;
+    }
+
+    public static String[] parseLabel(String combinedString) {
+        return null;
+    }
+
+    public static int addToMap(String label, String s, int curAddr, Map<String, Integer> addrMap) {
+        return 0;
+    }
+
+    public static ArrayList<String> toLittleE(ArrayList<Integer> array) {
+        return null;
+    }
+
     public static int stringToHex(String s, Map<String, Integer> map){
         String[] input = parseString(s);
         int result = 0;
@@ -46,7 +116,8 @@ public class Main {
             result = map.get("syscall");
         }
         if(input[0].equals("j")) {
-            result = jType(input, map);
+            //result = jType(input, map);
+            result = -1;
         }
         if(input[0].equals("add") || input[0].equals("and") || input[0].equals("or") || input[0].equals("slt") || input[0].equals("sub")) {
             result = rType(input, map);
@@ -55,7 +126,8 @@ public class Main {
             result = iTypeReg(input, map);
         }
         if(input[0].equals("beq") || input[0].equals("bne") || input[0].equals("lui")) {
-            result = iTypeBranch(input, map);
+            //result = iTypeBranch(input, map);
+            result = -1;
         }
         if(input[0].equals("sw") || input[0].equals("lw")) {
             result = funkyType(input, map);
