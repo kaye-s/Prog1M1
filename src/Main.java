@@ -97,7 +97,7 @@ public class Main {
     }
 
     public static String[] parseLabel(String combinedString) {
-        combinedString = combinedString.trim();
+        combinedString = combinedString.substring(0, combinedString.lastIndexOf("\"")).trim();
 
         //Find colon and create label (removing whitespace
         int colon = combinedString.indexOf(':');
@@ -105,15 +105,10 @@ public class Main {
         label = label.trim();
 
         //Find location of string and create rest, removing quotes
-        // .asciiz "String"
+        // .asciiz "String
         String rest = combinedString.substring(colon+1);
-        int stringStart;
-        if(rest.contains("\"")) {
-            stringStart = rest.indexOf("\"");
-        } else {
-            stringStart = rest.indexOf("'");
-        }
-        rest = rest.substring(stringStart+1, rest.length()-1);
+
+        rest = rest.substring(rest.indexOf("\"")+1);
         return new String[]{label, rest};
     }
 
@@ -126,7 +121,30 @@ public class Main {
     }
 
     public static ArrayList<String> toLittleE(ArrayList<Integer> array) {
-        return null;
+        //  Convert array to little eindian
+        //  [11,22,33,44] -> [44332211]
+        //  Last Element in newList must be 8 (00 buffered)
+        int remain = 4- array.size() % 4;
+        while (remain > 0 && remain <4){
+            array.add(0);
+            --remain;
+        }
+        String elem1;
+        String elem2;
+        String elem3;
+        String elem4;
+
+        ArrayList<String> newArray = new ArrayList<>();
+        for(int i = 0; i <= array.size()-4; i = i+4) {
+            elem1 = String.format("%02x", array.get(i));
+            elem2 = String.format("%02x", array.get(i+1));
+            elem3 = String.format("%02x", array.get(i+2));
+            elem4 = String.format("%02x", array.get(i+3));
+            newArray.add(elem4+elem3+elem2+elem1);
+        }
+
+
+        return newArray;
     }
 
     public static int stringToHex(String s, Map<String, Integer> map){
