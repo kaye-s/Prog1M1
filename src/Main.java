@@ -97,11 +97,32 @@ public class Main {
     }
 
     public static String[] parseLabel(String combinedString) {
-        return null;
+        combinedString = combinedString.trim();
+
+        //Find colon and create label (removing whitespace
+        int colon = combinedString.indexOf(':');
+        String label = combinedString.substring(0, colon);
+        label = label.trim();
+
+        //Find location of string and create rest, removing quotes
+        // .asciiz "String"
+        String rest = combinedString.substring(colon+1);
+        int stringStart;
+        if(rest.contains("\"")) {
+            stringStart = rest.indexOf("\"");
+        } else {
+            stringStart = rest.indexOf("'");
+        }
+        rest = rest.substring(stringStart+1, rest.length()-1);
+        return new String[]{label, rest};
     }
 
     public static int addToMap(String label, String s, int curAddr, Map<String, Integer> addrMap) {
-        return 0;
+        //addToMap(label, string, int curAddr, addrMap) return new int curAddr
+            //add label, curAddr to addrMap
+            //Updates curAddr + (length of previous string + 1)
+        addrMap.put(label, curAddr);
+        return (curAddr + s.length() + 1);
     }
 
     public static ArrayList<String> toLittleE(ArrayList<Integer> array) {
