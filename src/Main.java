@@ -18,7 +18,7 @@ public class Main {
         try {
             File input = new File(args[0]);
             //Convert filename to filename - .txt
-            String filename = "";
+            String filename = args[0].substring(0, args[0].lastIndexOf("."));
             Scanner myReader = new Scanner(input);
             FileWriter dataWriter = new FileWriter(filename + ".data");
             //CALL DATA METHOD
@@ -50,54 +50,75 @@ public class Main {
         Map<String, Integer> addrMap = new HashMap<>();
 
         //Count lineNum
+        int lineNum = 0;
+
+        //Array to hold string elements
+        ArrayList<Integer> charList = new ArrayList<>();
 
         while (myReader.hasNextLine()) {
             String data = myReader.nextLine();
             data = data.trim();
+            System.out.println(data + "\n");
             if (data.equals("\n") || data.isEmpty()) {
+                continue;
+            }
+            if (data.equals(".data") || data.isEmpty()) {
                 continue;
             }
             if (data.charAt(0) == '#') {
                 continue;
             }
+            if(data.equals(".text"))
+                break;
             // First piece 0x10010000
+            int curAddr = 0x10010000;
 
             //Find first label
             //parseLabel(combinedString) returns array [label, string]
                 //Parse label (no colon) and string
+            String[] array = parseLabel(data);
 
             //addToMap(label, string, int curAddr, addrMap) return new int curAddr
                 //add label, curAddr to addrMap
                 //Updates curAddr + (length of previous string + 1)
-            //curAddr = addToMap(a, b, c, d)
+            curAddr = addToMap(array[0], array[1], curAddr, addrMap);
 
-            //String str = array[1] //[label, string]
+            String str = array[1] + '\0'; //[label, string]
 
             //Store each character as an int in an arrayList [11, 22, 33, 44, 55, 66, 77, 88]
-
+            for(int i = 0; i < str.length(); ++i) {
+                charList.add((int)str.charAt(i));
+            }
             //STORE EVERYTHING
         }
         //Entire array of strings
-        //toLittleE(ArrayList) returns arrayList
-        //  Convert array to little eindian
-        //  [11,22,33,44] -> [44332211]
-        //  Last Element in newList must be 8 (00 buffered)
+        ArrayList<String> stringList = toLittleE(charList);
 
         //Print to file From Arraylist
         //For loop
         //  print element
         //  print newline
-
-        //Print to file 0s.
-        //For loop
-        //  print(8 0's
-        //  print newline
+        try {
+            for (int i = 0; i < stringList.size(); ++i) {
+                writer.write(stringList.get(i) + '\n');
+                ++lineNum;
+            }
+            //Print to file 0s.
+            //For loop
+            //  print(8 0's
+            //  print newline
+            for (int i = stringList.size(); i < 1024; ++i) {
+                writer.write("00000000" + '\n');
+            }
+        } catch(Exception e){
+            System.out.println("An error occurred.");
+        }
 
         return addrMap;
     }
 
     public static String[] parseLabel(String combinedString) {
-        combinedString = combinedString.substring(0, combinedString.lastIndexOf("\"")).trim();
+        combinedString = combinedString.substring(0, combinedString.lastIndexOf("\""));
 
         //Find colon and create label (removing whitespace
         int colon = combinedString.indexOf(':');
