@@ -12,6 +12,8 @@ public class Main {
     public static int neg16 = 65535;
     public static int neg26 = 67108863;
 
+    public static int dataStart = 0x10010000;
+
     public static void main(String[] args) {
         Map<String, Integer> map = new HashMap<>();
         map = createMap(map);
@@ -49,8 +51,8 @@ public class Main {
         //Create writer (name of file.data)
         Map<String, Integer> addrMap = new HashMap<>();
 
-        //Count lineNum
-        int lineNum = 0;
+        //Starting address
+        int curAddr = dataStart;
 
         //Array to hold string elements
         ArrayList<Integer> charList = new ArrayList<>();
@@ -70,8 +72,6 @@ public class Main {
             }
             if(data.equals(".text"))
                 break;
-            // First piece 0x10010000
-            int curAddr = 0x10010000;
 
             //Find first label
             //parseLabel(combinedString) returns array [label, string]
@@ -101,7 +101,6 @@ public class Main {
         try {
             for (int i = 0; i < stringList.size(); ++i) {
                 writer.write(stringList.get(i) + '\n');
-                ++lineNum;
             }
             //Print to file 0s.
             //For loop
