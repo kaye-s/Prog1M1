@@ -50,7 +50,7 @@ public class TestToLittleE {
 
         ArrayList<String> out = Main.toLittleE(in);
         Assert.assertEquals(1, out.size());
-        Assert.assertEquals("ddeebbaa", out.get(0));
+        Assert.assertEquals("ddccbbaa", out.get(0));
     }
 
     @Test
@@ -67,7 +67,7 @@ public class TestToLittleE {
 
         ArrayList<String> out = Main.toLittleE(in);
         Assert.assertEquals(2, out.size());
-        Assert.assertEquals("ddeebbaa", out.get(0));
+        Assert.assertEquals("ddccbbaa", out.get(0));
         Assert.assertEquals("fbfaffee", out.get(1));
     }
 
