@@ -11,36 +11,42 @@ public class TestParseLabel {
         Assert.assertEquals(result, Main.parseLabel(arg));
     }
 
+    @Test
     public void testParseLabelWithSpaces() {
         String arg = "hello_world:    .asciiz    'hello world'";
         String[] result = {"hello_world", "hello world"};
         Assert.assertEquals(result, Main.parseLabel(arg));
     }
 
+    @Test
     public void testParseLabelWithSpacesAndTabs() {
         String arg = "hello_world:  \t\t  .asciiz \t \t   'hello world'";
         String[] result = {"hello_world", "hello world"};
         Assert.assertEquals(result, Main.parseLabel(arg));
     }
 
+    @Test
     public void testParseLabelWithTabs() {
         String arg = "hello_world:\t.asciiz\t\t'hello world'";
         String[] result = {"hello_world", "hello world"};
         Assert.assertEquals(result, Main.parseLabel(arg));
     }
 
+    @Test
     public void testParseLabelWithSpacesBetweenColon() {
         String arg = "hello_world   : \t.asciiz \t\t'hello world'";
         String[] result = {"hello_world", "hello world"};
         Assert.assertEquals(result, Main.parseLabel(arg));
     }
 
+    @Test
     public void testParseLabelWithTabsBetweenColon() {
         String arg = "hello_world\t\t: \t.asciiz\t\t'hello world'";
         String[] result = {"hello_world", "hello world"};
         Assert.assertEquals(result, Main.parseLabel(arg));
     }
 
+    @Test
     public void testParseLabelWithSpacesAndTabsBetweenColon() {
         String arg = "hello_world  \t\t \t :\t.asciiz\t    \t'hello world'";
         String[] result = {"hello_world", "hello world"};
