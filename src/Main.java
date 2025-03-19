@@ -152,7 +152,7 @@ public class Main {
                 if(data.contains(":")) {
                     //Add to ADDRMAP
                     String labelRest = data.substring(0, data.indexOf(':'));
-                    addrMap.put(labelRest, finalArray.size()+textStart);
+                    addrMap.put(labelRest, finalArray.size()*4+textStart);
                 } else {
                     //else
                     //  expand (add both parts to arraylist
@@ -306,6 +306,7 @@ public class Main {
         int opcode = map.get("j");
         int instIndex = toNum(args[1], addrMap);
         instIndex = instIndex & 0xFFFFFF;
+        instIndex = instIndex >> 2;
         int inst = 0;
         if (instIndex < 0){
             instIndex = instIndex & neg26;
