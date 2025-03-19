@@ -13,6 +13,9 @@ public class Main {
     public static int neg26 = 67108863;
 
     public static int dataStart = 0x10010000;
+    public static int textStart = 0x00400000;
+
+    public static ArrayList<String> finalArray = new ArrayList<>();
 
     public static void main(String[] args) {
         Map<String, Integer> map = new HashMap<>();
@@ -21,25 +24,27 @@ public class Main {
             File input = new File(args[0]);
             //Convert filename to filename - .txt
             String filename = args[0].substring(0, args[0].lastIndexOf("."));
-            Scanner myReader = new Scanner(input);
+            Scanner dataReader = new Scanner(input);
+            Scanner textReader = new Scanner(input);
             FileWriter dataWriter = new FileWriter(filename + ".data");
             //CALL DATA METHOD
-            Map<String, Integer> addrMap = data(myReader, dataWriter);
+            Map<String, Integer> addrMap = data(dataReader, dataWriter);
 
             FileWriter textWriter = new FileWriter(filename + ".text");
             //CALL TEXT METHOD
-            //text(myReader, textWriter, map, addrMap)
+            text(textReader, textWriter, map, addrMap);
 
             //int result = stringToHex(data, map);
             //writer.write(String.format("%08x", result) + "\n");
 
             dataWriter.close();
             textWriter.close();
-            myReader.close();
+            dataReader.close();
+            textReader.close();
         } catch (Exception e) {
-        System.out.println("An error occurred.");
-        e.printStackTrace();
-    }
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
 
 
 
@@ -60,7 +65,6 @@ public class Main {
         while (myReader.hasNextLine()) {
             String data = myReader.nextLine();
             data = data.trim();
-            System.out.println(data + "\n");
             if (data.equals("\n") || data.isEmpty()) {
                 continue;
             }
@@ -116,6 +120,100 @@ public class Main {
         return addrMap;
     }
 
+    public static void text(Scanner myReader, FileWriter writer, Map<String, Integer> map, Map<String, Integer> addrMap) {
+        String data;
+        while (myReader.hasNextLine()) {
+            data = myReader.nextLine();
+            if (data.equals(".text")) {
+                break;
+            }
+        }
+
+        //Line after .text
+        while(myReader.hasNextLine()) {
+            data = myReader.nextLine().trim();
+            System.out.println(data);
+            if (data.equals("\n") || data.isEmpty()) {
+                continue;
+            }
+            if (data.charAt(0) == '#') {
+                continue;
+            }
+            //Check in current map map.containsKey
+            String[] parse = parseString(data);
+
+            //if yes
+            //Add string to arrayList
+            if(map.containsKey(parse[0])) {
+                finalArray.add(data);
+            } else {
+                //If no
+                //If end in colon (label) - calculate (based on current arraylist)
+                if(data.contains(":")) {
+                    //Add to ADDRMAP
+                    String labelRest = data.substring(0, data.indexOf(':'));
+                    addrMap.put(labelRest, finalArray.size()+textStart);
+                } else {
+                    //else
+                    //  expand (add both parts to arraylist
+                    //  pseudoExpand(String pesudo)
+                    //      returns mini array [psuedo1, psuedo2]
+                    //  add pseudo 1 and puesdo2 to array
+                    //psuedo 1 add to array
+                    // if(!psuedo2.equals(""))
+                    //    add to array
+                    String[] psuedo = psuedoExpand(data, addrMap);
+                    finalArray.add(psuedo[0]);
+                    if(!psuedo[1].isEmpty()) {
+                        finalArray.add(psuedo[1]);
+                    }
+                }
+            }
+        }
+        //Arraylist of instructions (strings) with address labels
+        //use original code (adjust to turn labels into immediates
+        try {
+            for(String element : finalArray) {
+                writer.write(String.format("%08x", stringToHex(element, map, addrMap)) + "\n");
+            }
+        } catch(Exception e){
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        //Write each hex to file
+
+    }
+
+    public static String[] psuedoExpand(String psuedo, Map<String, Integer> addrMap) {
+        String[] parse = parseString(psuedo);
+        String[] result = {"", ""};
+        if(parse[0].equals("li")) {
+            int imm = toNum(parse[2], addrMap);
+            if(imm > 0xFFFF) {
+                result[0] = "lui $at, 0x" + String.format("%04x", imm >> 16);
+                result[1] = "ori " + parse[1] + ", $at, 0x" + String.format("%04x", imm & 0xFFFF);
+            } else {
+                result[0] = "addiu " + parse[1] + ", $0, 0x" + String.format("%04x", imm);
+            }
+        } else if(parse[0].equals("move")) {
+            result[0] = "add " + parse[1] + ", " + parse[2] + ", $0";
+        } else if(parse[0].equals("la")) {
+            if(addrMap.containsKey(parse[2])) {
+                result[0] = "lui $at, 0x" + (String.format("%04x", addrMap.get(parse[2]) >> 16));
+                result[1] = "ori " + parse[1] + ", $at, 0x" + (String.format("%04x", addrMap.get(parse[2]) & 0xFFFF));
+            } else {
+                result[0] = "lui $at, 0x0040";
+                result[1] = "ori " + parse[1] + ", $at, " + parse[2];
+            }
+            //else lui 0x0040
+            // ori at 0 label
+        } else {
+            result[0] = "slt $1, " + parse[1] + ", " + parse[2];
+            result[1] = "bne $1, $0, " + parse[3];
+        }
+        return result;
+    }
+
     public static String[] parseLabel(String combinedString) {
         combinedString = combinedString.substring(0, combinedString.lastIndexOf("\""));
 
@@ -167,7 +265,7 @@ public class Main {
         return newArray;
     }
 
-    public static int stringToHex(String s, Map<String, Integer> map){
+    public static int stringToHex(String s, Map<String, Integer> map, Map<String, Integer> addrMap){
         String[] input = parseString(s);
         int result = 0;
 
@@ -175,18 +273,16 @@ public class Main {
             result = map.get("syscall");
         }
         if(input[0].equals("j")) {
-            //result = jType(input, map);
-            result = -1;
+            result = jType(input, map, addrMap);
         }
         if(input[0].equals("add") || input[0].equals("and") || input[0].equals("or") || input[0].equals("slt") || input[0].equals("sub")) {
             result = rType(input, map);
         }
-        if(input[0].equals("addiu") || input[0].equals("andi") || input[0].equals("ori")) {
-            result = iTypeReg(input, map);
+        if(input[0].equals("addiu") || input[0].equals("andi") || input[0].equals("ori")) { //IF ORI CHECK FOR LABEL
+            result = iTypeReg(input, map, addrMap);
         }
-        if(input[0].equals("beq") || input[0].equals("bne") || input[0].equals("lui")) {
-            //result = iTypeBranch(input, map);
-            result = -1;
+        if(input[0].equals("beq") || input[0].equals("bne") || input[0].equals("lui")) { //IF BNE CHECK FOR LABEL
+            result = iTypeBranch(input, map, addrMap);
         }
         if(input[0].equals("sw") || input[0].equals("lw")) {
             result = funkyType(input, map);
@@ -195,19 +291,21 @@ public class Main {
         return result;
 
     }
-    public static int toNum(String s) {
+    public static int toNum(String s, Map<String, Integer> addrMap) {
         int num;
-        if(s.length() > 2 && s.charAt(1) == 'x') {
+        if(addrMap.containsKey(s)) {
+            num = addrMap.get(s);
+        }else if (s.length() > 2 && s.charAt(1) == 'x') {
             num = Integer.parseInt(s.substring(2), 16);
         } else {
             num = Integer.parseInt(s);
         }
-
         return num;
     }
-    public static int jType(String[] args, Map<String, Integer> map) {
+    public static int jType(String[] args, Map<String, Integer> map, Map<String, Integer> addrMap) {
         int opcode = map.get("j");
-        int instIndex = toNum(args[1]);
+        int instIndex = toNum(args[1], addrMap);
+        instIndex = instIndex & 0xFFFFFF;
         int inst = 0;
         if (instIndex < 0){
             instIndex = instIndex & neg26;
@@ -234,11 +332,11 @@ public class Main {
         return inst;
     }
 
-    public static int iTypeReg(String[] args, Map<String, Integer> map) {
+    public static int iTypeReg(String[] args, Map<String, Integer> map, Map<String, Integer> addrMap) {
         int opcode = map.get(args[0]);
         int rs = map.get(args[2]);
         int rt = map.get(args[1]);
-        int imm = toNum(args[3]);
+        int imm = toNum(args[3], addrMap);
         int inst = 0;
         if (imm < 0){
             imm = imm & neg16;
@@ -251,7 +349,7 @@ public class Main {
         return inst;
     }
 
-    public static int iTypeBranch(String[] args, Map<String, Integer> map) {
+    public static int iTypeBranch(String[] args, Map<String, Integer> map, Map<String, Integer> addrMap) {
         int opcode = map.get(args[0]);
         int rs;
         int rt;
@@ -261,12 +359,12 @@ public class Main {
         if(args[0].equals("lui")) {
             rs = 0;
             rt = map.get(args[1]);
-            imm = toNum(args[2]);
+            imm = toNum(args[2], addrMap);
 
         } else{
             rs = map.get(args[1]);
             rt = map.get(args[2]);
-            imm = toNum(args[3]);
+            imm = toNum(args[3], addrMap);
         }
         if (imm < 0){
             imm = imm & neg16;
@@ -295,7 +393,11 @@ public class Main {
         }
         int offset = 0;
         if (!offsetStr.isEmpty()){
-            offset = toNum(offsetStr);
+            if(offsetStr.length() > 2 && offsetStr.charAt(1) == 'x') {
+                offset = Integer.parseInt(offsetStr.substring(2), 16);
+            } else {
+                offset = Integer.parseInt(offsetStr);
+            }
             if (offset < 0){
                 offset = offset & neg16;
             }
