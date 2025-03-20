@@ -366,6 +366,14 @@ public class Main {
             rs = map.get(args[1]);
             rt = map.get(args[2]);
             imm = toNum(args[3], addrMap);
+            // imm = cur - imm for relative addressing
+            String curInst = args[0] + " " + args[1] + ", " + args[2] + ", " + args[3];
+            int byteAddr = finalArray.indexOf(curInst) + 0x4;
+
+            imm = imm - byteAddr;
+            imm = imm & 0xFFFF;
+            imm = imm >> 4;
+
         }
         if (imm < 0){
             imm = imm & neg16;
