@@ -305,7 +305,7 @@ public class Main {
     public static int jType(String[] args, Map<String, Integer> map, Map<String, Integer> addrMap) {
         int opcode = map.get("j");
         int instIndex = toNum(args[1], addrMap);
-        instIndex = instIndex & 0xFFFFFF;
+        instIndex = instIndex & 0xFFFFFFF;
         instIndex = instIndex >> 2;
         int inst = 0;
         if (instIndex < 0){
