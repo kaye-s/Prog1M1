@@ -177,8 +177,8 @@ public class Main {
         //Arraylist of instructions (strings) with address labels
         //use original code (adjust to turn labels into immediates
         try {
-            for(String element : finalArray) {
-                writer.write(String.format("%08x", stringToHex(element, map, addrMap)) + "\n");
+            for(int i = 0; i < finalArray.size(); ++i) {
+                writer.write(String.format("%08x", stringToHex(finalArray.get(i), map, addrMap, i)) + "\n");
             }
         } catch(Exception e){
             System.out.println("An error occurred.");
@@ -291,7 +291,7 @@ public class Main {
         return newArray;
     }
 
-    public static int stringToHex(String s, Map<String, Integer> map, Map<String, Integer> addrMap){
+    public static int stringToHex(String s, Map<String, Integer> map, Map<String, Integer> addrMap, int cur){
         String[] input = parseString(s);
         int result = 0;
 
@@ -308,7 +308,7 @@ public class Main {
             result = iTypeReg(input, map, addrMap);
         }
         if(input[0].equals("beq") || input[0].equals("bne") || input[0].equals("lui")) { //IF BNE CHECK FOR LABEL
-            result = iTypeBranch(input, map, addrMap);
+            result = iTypeBranch(input, map, addrMap, cur);
         }
         if(input[0].equals("sw") || input[0].equals("lw")) {
             result = funkyType(input, map);
@@ -376,7 +376,7 @@ public class Main {
         return inst;
     }
 
-    public static int iTypeBranch(String[] args, Map<String, Integer> map, Map<String, Integer> addrMap) {
+    public static int iTypeBranch(String[] args, Map<String, Integer> map, Map<String, Integer> addrMap, int cur) {
         int opcode = map.get(args[0]);
         int rs;
         int rt;
@@ -393,8 +393,9 @@ public class Main {
             rt = map.get(args[2]);
             imm = toNum(args[3], addrMap);
             // imm = cur - imm for relative addressing
-            String curInst = args[0] + " " + args[1] + ", " + args[2] + ", " + args[3];
-            int byteAddr = (finalArray.indexOf(curInst) + 1) * 4 + textStart;
+            // String curInst = args[0] + " " + args[1] + ", " + args[2] + ", " + args[3];
+            // int byteAddr = (finalArray.indexOf(curInst) + 1) * 4 + textStart;
+            int byteAddr = (cur + 1) * 4 + textStart;
 
             imm = imm - byteAddr;
             imm = imm & 0xFFFF;
