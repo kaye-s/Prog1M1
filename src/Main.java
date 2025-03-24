@@ -151,11 +151,14 @@ public class Main {
                 //If end in colon (label) - calculate (based on current arraylist)
                 if(data.contains(":")) {
                     //Add to ADDRMAP
-                    String[] combined = parseLabelInstruction(data);
+                    String[] combined = parseLabelInstruction(data, addrMap, map);
                     String labelRest = combined[0].substring(0, data.indexOf(':'));
                     addrMap.put(labelRest, finalArray.size()*4+textStart);
                     if(!combined[1].isEmpty()) {
                         finalArray.add(combined[1]);
+                    }
+                    if(!combined[2].isEmpty()) {
+                        finalArray.add(combined[2]);
                     }
                 } else {
                     //else
@@ -188,8 +191,8 @@ public class Main {
 
     }
 
-    public static String[] parseLabelInstruction(String str) {
-        String[] array = {"", ""};
+    public static String[] parseLabelInstruction(String str, Map<String, Integer> addrMap, Map<String, Integer> map) {
+        String[] array = {"", "", ""};
         //label:
         //label: #comment
         //label: add x y z
@@ -204,7 +207,20 @@ public class Main {
                 array[0] = label;
             } else {
                 array[0] = label;
-                array[1] = rest;
+                //Check in current map map.containsKey
+                String[] parse = parseString(rest);
+
+                //if yes
+                //Add string to arrayList
+                if(map.containsKey(parse[0])) {
+                   array[1] = rest;
+                } else {
+                    String[] psuedo = psuedoExpand(rest, addrMap);
+                    array[1] = psuedo[0];
+                    if (!psuedo[1].isEmpty()) {
+                        array[2] = psuedo[1];
+                    }
+                }
             }
         }
         return array;
