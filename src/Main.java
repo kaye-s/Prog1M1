@@ -74,7 +74,7 @@ public class Main {
             if (data.charAt(0) == '#') {
                 continue;
             }
-            if(data.equals(".text"))
+            if(data.contains(".text"))
                 break;
 
             //Find first label
@@ -124,8 +124,31 @@ public class Main {
         String data;
         while (myReader.hasNextLine()) {
             data = myReader.nextLine();
-            if (data.trim().equals(".text")) {
-                break;
+            if (data.contains(".text")) {
+//                break;
+                if (data.trim().equals(".text")) {
+                    // breaks if .text is just .text
+                    break;
+                } else {
+                    // .text contains more
+                    data = data.trim().substring(5);
+                    if (data.contains("#")){
+                        // gets rid of comments
+                        data = data.substring(0, data.indexOf('#'));
+                    }
+
+                    String[] parse = parseString(data);
+                    if (map.containsKey(parse[0])){
+                        finalArray.add(data);
+                    } else {
+                        String[] psuedo = psuedoExpand(data, addrMap);
+                        finalArray.add(psuedo[0]);
+                        if(!psuedo[1].isEmpty()) {
+                            finalArray.add(psuedo[1]);
+                        }
+                        break;
+                    }
+                }
             }
         }
 
