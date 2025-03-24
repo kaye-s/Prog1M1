@@ -368,11 +368,11 @@ public class Main {
             imm = toNum(args[3], addrMap);
             // imm = cur - imm for relative addressing
             String curInst = args[0] + " " + args[1] + ", " + args[2] + ", " + args[3];
-            int byteAddr = finalArray.indexOf(curInst) + 0x4;
+            int byteAddr = finalArray.indexOf(curInst) * 4 + textStart;
 
             imm = imm - byteAddr;
             imm = imm & 0xFFFF;
-            imm = imm >> 4;
+            imm = imm >> 2;
 
         }
         if (imm < 0){
