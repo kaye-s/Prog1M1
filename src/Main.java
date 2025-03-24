@@ -125,7 +125,7 @@ public class Main {
         String data;
         while (myReader.hasNextLine()) {
             data = myReader.nextLine();
-            if (data.equals(".text")) {
+            if (data.trim().equals(".text")) {
                 break;
             }
         }
