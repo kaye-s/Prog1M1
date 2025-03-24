@@ -64,6 +64,7 @@ public class Main {
 
         while (myReader.hasNextLine()) {
             String data = myReader.nextLine();
+            System.out.println(data);
             data = data.trim();
             if (data.equals("\n") || data.isEmpty()) {
                 continue;
@@ -414,8 +415,8 @@ public class Main {
             int byteAddr = (cur + 1) * 4 + textStart;
 
             imm = imm - byteAddr;
-            imm = imm & 0xFFFF;
             imm = imm >> 2;
+            imm = imm & 0xFFFF;
 
         }
         if (imm < 0){
