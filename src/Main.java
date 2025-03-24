@@ -151,8 +151,12 @@ public class Main {
                 //If end in colon (label) - calculate (based on current arraylist)
                 if(data.contains(":")) {
                     //Add to ADDRMAP
-                    String labelRest = data.substring(0, data.indexOf(':'));
+                    String[] combined = parseLabelInstruction(data);
+                    String labelRest = combined[0].substring(0, data.indexOf(':'));
                     addrMap.put(labelRest, finalArray.size()*4+textStart);
+                    if(!combined[1].isEmpty()) {
+                        finalArray.add(combined[1]);
+                    }
                 } else {
                     //else
                     //  expand (add both parts to arraylist
@@ -182,6 +186,28 @@ public class Main {
         }
         //Write each hex to file
 
+    }
+
+    public static String[] parseLabelInstruction(String str) {
+        String[] array = {"", ""};
+        //label:
+        //label: #comment
+        //label: add x y z
+        //label: add x y z #commment
+        if(str.indexOf(":") == str.length()-1) {
+            array[0] = str;
+        } else {
+            int colon = str.indexOf(':');
+            String label = str.substring(0, colon+1);
+            String rest = str.substring(colon + 1).trim();
+            if(rest.charAt(0) == '#') {
+                array[0] = label;
+            } else {
+                array[0] = label;
+                array[1] = rest;
+            }
+        }
+        return array;
     }
 
     public static String[] psuedoExpand(String psuedo, Map<String, Integer> addrMap) {
