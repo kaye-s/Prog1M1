@@ -68,7 +68,7 @@ public class Main {
             if (data.equals("\n") || data.isEmpty()) {
                 continue;
             }
-            if (data.equals(".data") || data.isEmpty()) {
+            if (data.contains(".data") || data.isEmpty()) {
                 continue;
             }
             if (data.charAt(0) == '#') {
@@ -136,18 +136,19 @@ public class Main {
                         // gets rid of comments
                         data = data.substring(0, data.indexOf('#'));
                     }
-
-                    String[] parse = parseString(data);
-                    if (map.containsKey(parse[0])){
-                        finalArray.add(data);
-                    } else {
-                        String[] psuedo = psuedoExpand(data, addrMap);
-                        finalArray.add(psuedo[0]);
-                        if(!psuedo[1].isEmpty()) {
-                            finalArray.add(psuedo[1]);
+                    if (!data.trim().isEmpty()) {
+                        String[] parse = parseString(data);
+                        if (map.containsKey(parse[0])) {
+                            finalArray.add(data);
+                        } else {
+                            String[] psuedo = psuedoExpand(data, addrMap);
+                            finalArray.add(psuedo[0]);
+                            if (!psuedo[1].isEmpty()) {
+                                finalArray.add(psuedo[1]);
+                            }
                         }
-                        break;
                     }
+                    break;
                 }
             }
         }
