@@ -64,7 +64,6 @@ public class Main {
 
         while (myReader.hasNextLine()) {
             String data = myReader.nextLine();
-            System.out.println(data);
             data = data.trim();
             if (data.equals("\n") || data.isEmpty()) {
                 continue;
@@ -133,7 +132,6 @@ public class Main {
         //Line after .text
         while(myReader.hasNextLine()) {
             data = myReader.nextLine().trim();
-            System.out.println(data);
             if (data.equals("\n") || data.isEmpty()) {
                 continue;
             }
