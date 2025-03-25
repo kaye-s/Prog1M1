@@ -441,9 +441,9 @@ public class Main {
             imm = imm & 0xFFFF;
 
         }
-        if (imm < 0){
-            imm = imm & neg16;
-        }
+//        if (imm < 0){
+//            imm = imm & neg16;
+//        }
 
         inst = inst | (imm << 0);
         inst = inst | (rt << 16);
