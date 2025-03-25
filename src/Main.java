@@ -125,31 +125,31 @@ public class Main {
         while (myReader.hasNextLine()) {
             data = myReader.nextLine();
             if (data.contains(".text")) {
-//                break;
-                if (data.trim().equals(".text")) {
-                    // breaks if .text is just .text
-                    break;
-                } else {
-                    // .text contains more
-                    data = data.trim().substring(5);
-                    if (data.contains("#")){
-                        // gets rid of comments
-                        data = data.substring(0, data.indexOf('#'));
-                    }
-                    if (!data.trim().isEmpty()) {
-                        String[] parse = parseString(data);
-                        if (map.containsKey(parse[0])) {
-                            finalArray.add(data);
-                        } else {
-                            String[] psuedo = psuedoExpand(data, addrMap);
-                            finalArray.add(psuedo[0]);
-                            if (!psuedo[1].isEmpty()) {
-                                finalArray.add(psuedo[1]);
-                            }
-                        }
-                    }
-                    break;
-                }
+                break;
+//                if (data.trim().equals(".text")) {
+//                    // breaks if .text is just .text
+//                    break;
+//                } else {
+//                    // .text contains more
+//                    data = data.trim().substring(5);
+//                    if (data.contains("#")){
+//                        // gets rid of comments
+//                        data = data.substring(0, data.indexOf('#'));
+//                    }
+//                    if (!data.trim().isEmpty()) {
+//                        String[] parse = parseString(data);
+//                        if (map.containsKey(parse[0])) {
+//                            finalArray.add(data);
+//                        } else {
+//                            String[] psuedo = psuedoExpand(data, addrMap);
+//                            finalArray.add(psuedo[0]);
+//                            if (!psuedo[1].isEmpty()) {
+//                                finalArray.add(psuedo[1]);
+//                            }
+//                        }
+//                    }
+//                    break;
+//                }
             }
         }
 
@@ -370,12 +370,12 @@ public class Main {
     public static int jType(String[] args, Map<String, Integer> map, Map<String, Integer> addrMap) {
         int opcode = map.get("j");
         int instIndex = toNum(args[1], addrMap);
-        instIndex = instIndex & 0xFFFFFFF;
         instIndex = instIndex >> 2;
+        instIndex = instIndex & 0xFFFFFFF;
         int inst = 0;
-        if (instIndex < 0){
-            instIndex = instIndex & neg26;
-        }
+//        if (instIndex < 0){
+//            instIndex = instIndex & neg26;
+//        }
 
         inst = inst | (instIndex << 0);
         inst = inst | (opcode << 26);
@@ -402,11 +402,11 @@ public class Main {
         int opcode = map.get(args[0]);
         int rs = map.get(args[2]);
         int rt = map.get(args[1]);
-        int imm = toNum(args[3], addrMap);
+        int imm = toNum(args[3], addrMap) & neg16;
         int inst = 0;
-        if (imm < 0){
-            imm = imm & neg16;
-        }
+//        if (imm < 0){
+//            imm = imm & neg16;
+//        }
 
         inst = inst | (imm << 0);
         inst = inst | (rt << 16);
